@@ -28,18 +28,20 @@ class GameOverScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        // Put in image here.
-        backgroundColor = UIColor.white
-        let background = SKSpriteNode(imageNamed: "Original")
-        background.anchorPoint = CGPoint.zero
-        background.position = CGPoint.zero
-        background.zPosition = -5
-        addChild(background)
+        backgroundColor = UIColor.black
+        
+        let starField = SKEmitterNode(fileNamed: "StarField")!
+        starField.position = CGPoint(x: frame.midX, y: frame.maxY)
+        starField.zPosition = -20
+        starField.advanceSimulationTime(TimeInterval(starField.particleLifetime))
+        addChild(starField)
+        
         let label = SKLabelNode(fontNamed: "Marker Felt")
         label.text = labeltext
         label.position = CGPoint(x: size.width / 2 + 300, y: size.height / 2 + 200)
         label.fontSize = 250
         addChild(label)
+        
         let decorationNode = SKSpriteNode(imageNamed: imageName)
         decorationNode.position = CGPoint(x: size.width / 2 - 500, y: size.height / 2 - 300)
         let spriteImageName = imageName as NSString

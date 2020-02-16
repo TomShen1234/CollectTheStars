@@ -12,27 +12,31 @@ import SpriteKit
 class MainMenu: SKScene {
 
     override func didMove(to view: SKView) {
-        let background = SKSpriteNode(imageNamed: "Original")
-        background.anchorPoint = CGPoint.zero
-        background.position = CGPoint.zero
-        addChild(background)
-        let label = SKLabelNode(fontNamed: "Marker Felt")
-        label.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        label.fontSize = 250
-        label.name = "StartLabel";
-        label.text = "Tap to Start"
-        label.fontColor = SKColor.white
-        label.zPosition = 100
-        addChild(label)
+        let starField = SKEmitterNode(fileNamed: "StarField")!
+        starField.position = CGPoint(x: frame.midX, y: frame.maxY)
+        starField.zPosition = -20
+        starField.advanceSimulationTime(TimeInterval(starField.particleLifetime))
+        addChild(starField)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let action = SKAction.fadeOut(withDuration: 1)
-        let label = childNode(withName: "StartLabel")
-        label?.run(action) {
-            // Action Completion Block
-            let instructionScene = Instruction(size: self.size)
-            self.view?.presentScene(instructionScene)
+        let location = touches.first!.location(in: self)
+        let node = self.nodes(at: location)
+        let startLabel = childNode(withName: "StartLabel")!
+        let instructionLabel = childNode(withName: "Instruction")!
+        if node.contains(startLabel) {
+            let action = SKAction.fadeOut(withDuration: 1)
+            startLabel.run(action) {
+                // Action Completion Block
+                //let instructionScene = Instruction(size: self.size)
+                let gameScene = GameScene(size: self.size)
+                self.view?.presentScene(gameScene, transition: SKTransition.crossFade(withDuration: 0.5))
+            }
+            instructionLabel.run(action)
+        } else if node.contains(instructionLabel) {
+            let instructionScene = Instruction(fileNamed: "Instruction")!
+            instructionScene.scaleMode = .aspectFill
+            self.view?.presentScene(instructionScene, transition: SKTransition.crossFade(withDuration: 0.5))
         }
     }
 }

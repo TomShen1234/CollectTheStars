@@ -25,7 +25,7 @@ class GameScene: SKScene {
     var gameOver : Bool = false
     
     override init(size: CGSize) {
-        let maxAspectRadio : CGFloat = 16.0/9.0 // 1
+        let maxAspectRadio : CGFloat = size.width / size.height
         let playableHeight = size.width / maxAspectRadio
         let playableMargin = (size.height - playableHeight) / 2.0
         playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: playableHeight)
@@ -49,24 +49,19 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         /* Setup your scene here */
         backgroundColor = UIColor.black
-        let starfieldNode = SKNode()
-        starfieldNode.name = "starfieldNode"
-        starfieldNode.addChild(starfieldEmitterNode(speed: -48, lifetime: size.height / 23, scale: 0.2, birthRate: 1, color: SKColor.lightGray))
-        starfieldNode.zPosition = -5
-        addChild(starfieldNode)
-        var emitterNode = starfieldEmitterNode(speed: -32, lifetime: size.height / 10, scale: 0.14, birthRate: 2, color: SKColor.gray)
-        emitterNode.zPosition = -10
-        starfieldNode.addChild(emitterNode)
-        emitterNode = starfieldEmitterNode(
-            speed: -20, lifetime: size.height / 5, scale: 0.1, birthRate: 5, color: SKColor.darkGray)
-        emitterNode.zPosition = -15
-        addChild(emitterNode)
+        
+        let starField = SKEmitterNode(fileNamed: "StarField")!
+        starField.position = CGPoint(x: frame.midX, y: frame.maxY)
+        starField.zPosition = -20
+        starField.advanceSimulationTime(TimeInterval(starField.particleLifetime))
+        addChild(starField)
+        
         spaceship.position = CGPoint(x: 400, y: 400)
         createSpaceshipEngine()
         spaceship.zPosition = -1
         addChild(spaceship)
         // moveSpaceShipToward(CGPoint(x: 500, y: 400))
-        debugDrawPlayableArea()
+        //debugDrawPlayableArea()
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnBomb), SKAction.wait(forDuration: 1.5)])))
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnStar),SKAction.wait(forDuration: 1.0)])))
         particleLayerNode.zPosition = 10
@@ -85,46 +80,6 @@ class GameScene: SKScene {
         let shortest = shortestAngleBetween(sprite.zRotation, angle2: velocity.angle)
         let amountToRotate = min(rotateRadiansPerSec * CGFloat(dt), abs(shortest))
         sprite.zRotation += shortest.sign() * amountToRotate
-    }
-
-    
-    func starfieldEmitterNode(speed: CGFloat, lifetime: CGFloat, scale: CGFloat, birthRate: CGFloat, color: SKColor) -> SKEmitterNode {
-        // more to come
-        let star = SKLabelNode(fontNamed: "Helvetica")
-        star.fontSize = 140.0
-        star.text = "✦"
-        let textureView = SKView()
-        let texture = textureView.texture(from: star)
-        texture?.filteringMode = .nearest
-        let emitterNode = SKEmitterNode()
-        emitterNode.particleTexture = texture
-        emitterNode.particleBirthRate = birthRate
-        emitterNode.particleColor = color
-        emitterNode.particleLifetime = lifetime
-        emitterNode.particleSpeed = speed
-        emitterNode.particleScale = scale
-        emitterNode.particleColorBlendFactor = 1
-        emitterNode.position = CGPoint(x: frame.midX, y: frame.maxY)
-        emitterNode.particlePositionRange = CGVector(dx: frame.maxX, dy: 0)
-        emitterNode.particleAction = SKAction.repeatForever(SKAction.sequence([SKAction.rotate(byAngle: -(CGFloat.pi / 4), duration: 1), SKAction.rotate(byAngle: CGFloat.pi / 4, duration: 1)]))
-        emitterNode.particleSpeedRange = 16.0
-        //1
-        let twinkles = 20
-        let colorSequence = SKKeyframeSequence(capacity: twinkles*2)
-        //2
-        let twinkleTime = 1.0/CGFloat(twinkles)
-        for i in 0..<twinkles {
-            //3
-            colorSequence.addKeyframeValue(
-            SKColor.white,time: CGFloat(i)*2 * twinkleTime/2)
-            colorSequence.addKeyframeValue(
-            SKColor.yellow, time: (CGFloat(i)*2+1)*twinkleTime/2)
-        }
-        //4
-        emitterNode.particleColorSequence = colorSequence
-        emitterNode.advanceSimulationTime(TimeInterval(lifetime))
-        emitterNode.emissionAngle = CGFloat.pi / 4
-        return emitterNode
     }
     
     func spawnStar() {
