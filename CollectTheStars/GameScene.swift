@@ -24,6 +24,12 @@ class GameScene: SKScene {
     let starMovePointsPerSec : CGFloat = 480.0
     var gameOver : Bool = false
     
+    let explosionSound = SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false)
+    let bellSound = SKAction.playSoundFileNamed("Bell(Star).mp3", waitForCompletion: false)
+    
+    // To update scene after resuming
+    var pauseTime: TimeInterval = 0
+    
     override init(size: CGSize) {
         let maxAspectRadio : CGFloat = size.width / size.height
         let playableHeight = size.width / maxAspectRadio
@@ -66,6 +72,13 @@ class GameScene: SKScene {
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnStar),SKAction.wait(forDuration: 1.0)])))
         particleLayerNode.zPosition = 10
         addChild(particleLayerNode)
+        
+        // Add Pause Button
+        let pauseButton = SKSpriteNode(imageNamed: "Pause")
+        pauseButton.position = CGPoint(x: 100, y: size.height - 100)
+        pauseButton.size = CGSize(width: 100, height: 100)
+        pauseButton.name = "pause"
+        addChild(pauseButton)
     }
     
     func createSpaceshipEngine() {
@@ -166,7 +179,7 @@ class GameScene: SKScene {
     {
         star.name = "train"
         star.removeAllActions()
-        run(SKAction.playSoundFileNamed("Bell(Star).mp3", waitForCompletion: false))
+        run(bellSound)
         
         let fadeToRed = SKAction.colorize(with: SKColor.red, colorBlendFactor: 1.0, duration: 0.2)
         star.run(fadeToRed)
@@ -183,7 +196,7 @@ class GameScene: SKScene {
         if explotionEmitter.parent == nil {
             particleLayerNode.addChild(explotionEmitter)
         }
-        run(SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false))
+        run(explosionSound)
         explotionEmitter.resetSimulation()
         bomb.removeFromParent()
         loseStar()
@@ -213,7 +226,7 @@ class GameScene: SKScene {
     
     func presentLosingGameOverScene() {
         let scene = GameOverScene(size: self.size, won: false)
-        let transition = SKTransition.flipHorizontal(withDuration: 0.5)
+        let transition = SKTransition.crossFade(withDuration: 0.5)
         self.view?.presentScene(scene, transition:transition)
     }
    
@@ -225,6 +238,9 @@ class GameScene: SKScene {
             dt = 0
         }
         lastUpdateTime = currentTime
+        
+//        print("Update: \(currentTime)")
+        
         moveSprite(spaceship, velocity: velocity)
         boundsCheckSpaceship()
         rotateSprite(spaceship, direction: velocity, rotateRadiansPerSec: spaceshipRotatedRadiansPerSec)
@@ -266,9 +282,22 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        let touchLocation = touch?.location(in: self)
-        moveSpaceShipToward(touchLocation!)
+        let touch = touches.first!
+        let touchLocation = touch.location(in: self)
+        
+        let node = nodes(at: touchLocation).first as? SKSpriteNode
+        if let node = node, node.name == "pause" {
+            showPauseMenu()
+        }
+        
+        let touchedLabel = nodes(at: touchLocation).first as? SKLabelNode
+        if let touchedLabel = touchedLabel, touchedLabel.name == "pauseResume" {
+            resumeGame()
+        } else if let touchedLabel = touchedLabel, touchedLabel.name == "pauseMenu" {
+            mainMenu()
+        }
+        
+        moveSpaceShipToward(touchLocation)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -326,11 +355,65 @@ class GameScene: SKScene {
             let gameOverScene = GameOverScene(size: size, won: true)
             gameOverScene.scaleMode = scaleMode
             // 2
-            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            let reveal = SKTransition.crossFade(withDuration: 0.5)
             // 3
             view?.presentScene(gameOverScene, transition: reveal)
         }
 
     }
 
+    func showPauseMenu() {
+        isPaused = true
+        
+        // Add pause menu
+        let backgroundNode = SKSpriteNode(color: UIColor(white: 0.3, alpha: 0.6), size: size)
+        backgroundNode.position = frame.center
+        backgroundNode.name = "pauseBG"
+        backgroundNode.zPosition = 20
+        addChild(backgroundNode)
+        
+        let resumeLabel = SKLabelNode(text: "Resume")
+        resumeLabel.fontSize = 96
+        resumeLabel.fontName = "Marker Felt"
+        resumeLabel.fontColor = .white
+        resumeLabel.name = "pauseResume"
+        resumeLabel.zPosition = 25
+        resumeLabel.position = CGPoint(x: frame.midX, y: (size.height / 3) * 2)
+        addChild(resumeLabel)
+        
+        let menuLabel = SKLabelNode(text: "Main Menu")
+        menuLabel.fontSize = 96
+        menuLabel.fontName = "Marker Felt"
+        menuLabel.fontColor = .white
+        menuLabel.name = "pauseMenu"
+        menuLabel.zPosition = 25
+        menuLabel.position = CGPoint(x: frame.midX, y: size.height / 3)
+        addChild(menuLabel)
+        
+        pauseTime = Date.timeIntervalSinceReferenceDate
+    }
+    
+    func resumeGame() {
+        let bg = childNode(withName: "pauseBG")
+        let resumeLabel = childNode(withName: "pauseResume")
+        let menuLabel = childNode(withName: "pauseMenu")
+        
+        bg?.removeFromParent()
+        resumeLabel?.removeFromParent()
+        menuLabel?.removeFromParent()
+        
+        // Update last update time
+        let timeElapsedSincePause = Date.timeIntervalSinceReferenceDate - pauseTime
+        lastUpdateTime += timeElapsedSincePause
+        
+        isPaused = false
+        
+//        print("Elapsed time: \(Date.timeIntervalSinceReferenceDate - pauseTime)")
+    }
+    
+    func mainMenu() {
+        let scene = MainMenu(fileNamed: "MainMenu")!
+        scene.scaleMode = self.scaleMode
+        view?.presentScene(scene, transition: .crossFade(withDuration: 0.2))
+    }
 }

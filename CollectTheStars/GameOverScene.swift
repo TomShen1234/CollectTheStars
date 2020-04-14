@@ -43,7 +43,7 @@ class GameOverScene: SKScene {
         addChild(label)
         
         let decorationNode = SKSpriteNode(imageNamed: imageName)
-        decorationNode.position = CGPoint(x: size.width / 2 - 500, y: size.height / 2 - 300)
+        decorationNode.position = CGPoint(x: size.width / 2 - 700, y: size.height / 2)
         let spriteImageName = imageName as NSString
         if spriteImageName.isEqual(to: "MySpaceship") {
             decorationNode.zRotation = π / 2
@@ -52,20 +52,41 @@ class GameOverScene: SKScene {
         }
         decorationNode.setScale(2.0)
         addChild(decorationNode)
+        
         let restartLabel = SKLabelNode(fontNamed: "Marker Felt")
         restartLabel.text = "Tap to Restart"
         restartLabel.fontSize = 200
         restartLabel.position = CGPoint(x: size.width / 2 + 300, y: size.height / 2 - 100)
         addChild(restartLabel)
+        
+        let mainMenuLabel = SKLabelNode(fontNamed: "Marker Felt")
+        mainMenuLabel.text = "Main Menu"
+        mainMenuLabel.fontSize = 100
+        mainMenuLabel.position = CGPoint(x: size.width / 2 + 300, y: size.height / 2 - 300)
+        mainMenuLabel.name = "MainMenu"
+        addChild(mainMenuLabel)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let block = SKAction.run {
-            let myScene = GameScene(size: self.size)
-            myScene.scaleMode = self.scaleMode
-            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-            self.view?.presentScene(myScene, transition: reveal)
+        let location = touches.first!.location(in: self)
+        let nodes = self.nodes(at: location)
+        
+        if nodes.contains(childNode(withName: "MainMenu")!) {
+            let block = SKAction.run {
+                let myScene = MainMenu(fileNamed: "MainMenu")!
+                myScene.scaleMode = self.scaleMode
+                let reveal = SKTransition.crossFade(withDuration: 0.5)
+                self.view?.presentScene(myScene, transition: reveal)
+            }
+            self.run(block)
+        } else {
+            let block = SKAction.run {
+                let myScene = GameScene(size: self.size)
+                myScene.scaleMode = self.scaleMode
+                let reveal = SKTransition.crossFade(withDuration: 0.5)
+                self.view?.presentScene(myScene, transition: reveal)
+            }
+            self.run(block)
         }
-        self.run(block)
     }
 }

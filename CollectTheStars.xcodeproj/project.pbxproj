@@ -25,6 +25,7 @@
 		CA6CF4EC1AFE5A8300BCE2FC /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = CA6CF4DF1AFE5A8300BCE2FC /* iTunesArtwork.png */; };
 		CA6CF4ED1AFE5A8300BCE2FC /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA6CF4E01AFE5A8300BCE2FC /* iTunesArtwork@2x.png */; };
 		D02A206A23F9017D006110BC /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = D02A206923F9017D006110BC /* MainMenu.sks */; };
+		D0795E6F241C9AF0001DE6E8 /* LivesCountStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0795E6E241C9AF0001DE6E8 /* LivesCountStar.swift */; };
 		D0FF3A5523F90AC3009DFED2 /* StarField.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0FF3A5323F90AC3009DFED2 /* StarField.sks */; };
 		D0FF3A5823F913D8009DFED2 /* Instruction.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0FF3A5723F913D8009DFED2 /* Instruction.sks */; };
 		E004A8431AD8F56D0031DA78 /* SpaceshipParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = E004A8411AD8F56D0031DA78 /* SpaceshipParticle.sks */; };
@@ -34,7 +35,6 @@
 		E004A8911AD936C20031DA78 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A8901AD936C20031DA78 /* MainMenu.swift */; };
 		E004A8931AD944500031DA78 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A8921AD944500031DA78 /* Instruction.swift */; };
 		E072C9461AD8E95900D969A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E072C9451AD8E95900D969A4 /* AppDelegate.swift */; };
-		E072C9481AD8E95900D969A4 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E072C9471AD8E95900D969A4 /* GameScene.sks */; };
 		E072C94A1AD8E95900D969A4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E072C9491AD8E95900D969A4 /* GameScene.swift */; };
 		E072C94C1AD8E95900D969A4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E072C94B1AD8E95900D969A4 /* GameViewController.swift */; };
 		E072C9511AD8E95900D969A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E072C9501AD8E95900D969A4 /* Assets.xcassets */; };
@@ -62,6 +62,7 @@
 		CA6CF4DF1AFE5A8300BCE2FC /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		CA6CF4E01AFE5A8300BCE2FC /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		D02A206923F9017D006110BC /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
+		D0795E6E241C9AF0001DE6E8 /* LivesCountStar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivesCountStar.swift; sourceTree = "<group>"; };
 		D0FF3A5323F90AC3009DFED2 /* StarField.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StarField.sks; sourceTree = "<group>"; };
 		D0FF3A5723F913D8009DFED2 /* Instruction.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Instruction.sks; sourceTree = "<group>"; };
 		E004A8411AD8F56D0031DA78 /* SpaceshipParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SpaceshipParticle.sks; sourceTree = "<group>"; };
@@ -73,7 +74,6 @@
 		E072C9401AD8E95900D969A4 /* CollectTheStars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectTheStars.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E072C9441AD8E95900D969A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E072C9451AD8E95900D969A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E072C9471AD8E95900D969A4 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		E072C9491AD8E95900D969A4 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; usesTabs = 0; };
 		E072C94B1AD8E95900D969A4 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		E072C9501AD8E95900D969A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -152,8 +152,8 @@
 				D0FF3A5723F913D8009DFED2 /* Instruction.sks */,
 				E0A231541AD8F09E008E9964 /* MyUtils.swift */,
 				E072C9451AD8E95900D969A4 /* AppDelegate.swift */,
-				E072C9471AD8E95900D969A4 /* GameScene.sks */,
 				E072C9491AD8E95900D969A4 /* GameScene.swift */,
+				D0795E6E241C9AF0001DE6E8 /* LivesCountStar.swift */,
 				E004A8541AD91D740031DA78 /* GameOverScene.swift */,
 				E072C94B1AD8E95900D969A4 /* GameViewController.swift */,
 				E072C9501AD8E95900D969A4 /* Assets.xcassets */,
@@ -246,7 +246,6 @@
 			files = (
 				E072C9511AD8E95900D969A4 /* Assets.xcassets in Resources */,
 				CA6CF4E41AFE5A8300BCE2FC /* Icon-40.png in Resources */,
-				E072C9481AD8E95900D969A4 /* GameScene.sks in Resources */,
 				CA6CF4E51AFE5A8300BCE2FC /* Icon-40@2x.png in Resources */,
 				CA6CF4EA1AFE5A8300BCE2FC /* Icon-76.png in Resources */,
 				D0FF3A5823F913D8009DFED2 /* Instruction.sks in Resources */,
@@ -286,6 +285,7 @@
 				E072C94A1AD8E95900D969A4 /* GameScene.swift in Sources */,
 				E004A8931AD944500031DA78 /* Instruction.swift in Sources */,
 				E072C94C1AD8E95900D969A4 /* GameViewController.swift in Sources */,
+				D0795E6F241C9AF0001DE6E8 /* LivesCountStar.swift in Sources */,
 				E072C9461AD8E95900D969A4 /* AppDelegate.swift in Sources */,
 				E0A231571AD8F09E008E9964 /* MyUtils.swift in Sources */,
 			);
@@ -406,9 +406,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2001;
 				INFOPLIST_FILE = CollectTheStars/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomandjerry.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -421,9 +423,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2001;
 				INFOPLIST_FILE = CollectTheStars/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomandjerry.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
