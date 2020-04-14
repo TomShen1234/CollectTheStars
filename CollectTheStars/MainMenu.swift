@@ -29,12 +29,22 @@ class MainMenu: SKScene {
             startLabel.run(action) {
                 // Action Completion Block
                 //let instructionScene = Instruction(size: self.size)
-                let gameScene = GameScene(size: self.size)
+                
+                // Aspect resize
+                let newHeight = (self.view!.bounds.size.height * self.size.width) / self.view!.bounds.size.width
+                
+                let gameScene = GameScene(size: CGSize(width: self.size.width, height: newHeight))
+                gameScene.scaleMode = .aspectFill
                 self.view?.presentScene(gameScene, transition: SKTransition.crossFade(withDuration: 0.5))
             }
             instructionLabel.run(action)
         } else if node.contains(instructionLabel) {
-            let instructionScene = Instruction(fileNamed: "Instruction")!
+            let instructionScene: Instruction
+            if UI_USER_INTERFACE_IDIOM() == .pad {
+                instructionScene = Instruction(fileNamed: "Instruction-iPad")!
+            } else {
+                instructionScene = Instruction(fileNamed: "Instruction")!
+            }
             instructionScene.scaleMode = .aspectFill
             self.view?.presentScene(instructionScene, transition: SKTransition.crossFade(withDuration: 0.5))
         }

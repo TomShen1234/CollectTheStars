@@ -20,7 +20,14 @@ class Instruction: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let mainMenu = MainMenu(fileNamed: "MainMenu")!
+        let sceneName: String
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            sceneName = "MainMenu-iPad"
+        } else {
+            sceneName = "MainMenu"
+        }
+        
+        let mainMenu = MainMenu(fileNamed: sceneName)!
         mainMenu.scaleMode = .aspectFill
         view?.presentScene(mainMenu, transition: SKTransition.crossFade(withDuration: 0.5))
     }

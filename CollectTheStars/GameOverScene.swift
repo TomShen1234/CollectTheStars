@@ -73,7 +73,14 @@ class GameOverScene: SKScene {
         
         if nodes.contains(childNode(withName: "MainMenu")!) {
             let block = SKAction.run {
-                let myScene = MainMenu(fileNamed: "MainMenu")!
+                let sceneName: String
+                if UI_USER_INTERFACE_IDIOM() == .pad {
+                    sceneName = "MainMenu-iPad"
+                } else {
+                    sceneName = "MainMenu"
+                }
+                
+                let myScene = MainMenu(fileNamed: sceneName)!
                 myScene.scaleMode = self.scaleMode
                 let reveal = SKTransition.crossFade(withDuration: 0.5)
                 self.view?.presentScene(myScene, transition: reveal)

@@ -18,7 +18,14 @@ class GameViewController: UIViewController {
             view.accessibilityIgnoresInvertColors = true
         }
 
-        let scene = MainMenu(fileNamed: "MainMenu")!
+        let sceneName: String
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            sceneName = "MainMenu-iPad"
+        } else {
+            sceneName = "MainMenu"
+        }
+        
+        let scene = MainMenu(fileNamed: sceneName)!
         // Configure the view.
         let skView = self.view as! SKView
         //skView.showsFPS = true
@@ -28,7 +35,7 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
-        scene.scaleMode = SKSceneScaleMode.fill
+        scene.scaleMode = SKSceneScaleMode.aspectFill
         
         skView.presentScene(scene)
     }

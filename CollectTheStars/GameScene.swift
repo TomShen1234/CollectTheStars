@@ -21,6 +21,7 @@ class GameScene: SKScene {
     let explotionEmitter = SKEmitterNode(fileNamed: "Explosion")!
     var invincible : Bool = false
     var lives = 5
+    var score = 0
     let starMovePointsPerSec : CGFloat = 480.0
     var gameOver : Bool = false
     
@@ -79,6 +80,16 @@ class GameScene: SKScene {
         pauseButton.size = CGSize(width: 100, height: 100)
         pauseButton.name = "pause"
         addChild(pauseButton)
+        
+        // Add infoLabel
+        let infoLabel = SKLabelNode(text: "Lives: \(lives), Stars: \(score)")
+        infoLabel.fontColor = .white
+        infoLabel.fontSize = 75
+        infoLabel.fontName = "Marker Felt"
+        infoLabel.name = "infoLabel"
+        infoLabel.position = CGPoint(x: frame.size.width * (6/7), y: frame.size.height * (8/9))
+        infoLabel.zPosition = 15
+        addChild(infoLabel)
     }
     
     func createSpaceshipEngine() {
@@ -226,6 +237,7 @@ class GameScene: SKScene {
     
     func presentLosingGameOverScene() {
         let scene = GameOverScene(size: self.size, won: false)
+        scene.scaleMode = self.scaleMode
         let transition = SKTransition.crossFade(withDuration: 0.5)
         self.view?.presentScene(scene, transition:transition)
     }
@@ -240,6 +252,10 @@ class GameScene: SKScene {
         lastUpdateTime = currentTime
         
 //        print("Update: \(currentTime)")
+        
+        // Update score label
+        let infoLabel = childNode(withName: "infoLabel") as! SKLabelNode
+        infoLabel.text = "Lives: \(lives), Stars: \(score)"
         
         moveSprite(spaceship, velocity: velocity)
         boundsCheckSpaceship()
@@ -346,6 +362,9 @@ class GameScene: SKScene {
             targetPosition = node.position
             
         }
+        
+        score = trainCount
+        
         // trainCount = 30
         if trainCount >= 30 && !gameOver {
             gameOver = true
@@ -412,7 +431,14 @@ class GameScene: SKScene {
     }
     
     func mainMenu() {
-        let scene = MainMenu(fileNamed: "MainMenu")!
+        let sceneName: String
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            sceneName = "MainMenu-iPad"
+        } else {
+            sceneName = "MainMenu"
+        }
+        
+        let scene = MainMenu(fileNamed: sceneName)!
         scene.scaleMode = self.scaleMode
         view?.presentScene(scene, transition: .crossFade(withDuration: 0.2))
     }

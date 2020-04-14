@@ -30,8 +30,12 @@ class LivesCountStar: SKNode {
         starNode.size = self.frame.size
         addChild(starNode)
         
+        labelNode.text = "\(liveCount)"
         labelNode.position = self.frame.center
         labelNode.zPosition = 10
+        labelNode.fontName = "Marker Felt"
+        labelNode.fontColor = .black
+        labelNode.fontSize = 15
         addChild(labelNode)
     }
     
